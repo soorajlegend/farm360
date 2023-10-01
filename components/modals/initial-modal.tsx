@@ -9,7 +9,6 @@ import axios from "axios"
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle
@@ -22,15 +21,18 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+import { Textarea } from "../ui/textarea"
 
 
 const formSchema = z.object({
     type: z.string().min(1, {
         message: "Select your account type"
+    }),
+    address: z.string().min(3, {
+        message: "Input your default address"
     }),
 })
 
@@ -65,6 +67,7 @@ const InitialModal = () => {
         resolver: zodResolver(formSchema),
         defaultValues: {
             type: "",
+            address: ""
         }
     })
 
@@ -80,7 +83,7 @@ const InitialModal = () => {
         // } catch (err) {
         //     console.log(err)
         // }
-        
+        router.push("/main")
     }
 
     if (!isMounted) {
@@ -138,6 +141,25 @@ const InitialModal = () => {
                                                 }
                                             </SelectContent>
                                         </Select>
+                                        <FormMessage className="dark:text-rose-500" />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="address"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className=
+                                            "uppercase text-sm font-bold text-slate-500 dark:text-slate-400 w-full flex">Address</FormLabel>
+                                        <FormControl>
+                                            <Textarea
+                                                disabled={isLoading}
+                                                className="bg-gray-100 dark:bg-slate-900/50 border-0 focus-visible:ring-0 text-black dark:text-slate-200 focus-visible:ring-offset-0"
+                                                placeholder={"address"}
+                                                {...field}
+                                            />
+                                        </FormControl>
                                         <FormMessage className="dark:text-rose-500" />
                                     </FormItem>
                                 )}

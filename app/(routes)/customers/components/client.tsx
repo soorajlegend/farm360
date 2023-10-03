@@ -6,17 +6,17 @@ import { Button } from "@/components/ui/button"
 import Heading from "@/components/ui/heading"
 import { Separator } from "@/components/ui/separator"
 import { Plus } from "lucide-react"
-import { ProductsColumnForWarehouse, columns } from "./columns"
+import { UsersColumnForWarehouse, columns } from "./columns"
 import { DataTable } from "@/components/ui/data-table"
 
 interface UsersTableClient {
-    data: ProductsColumnForWarehouse[],
+    data: UsersColumnForWarehouse[]
     title: string
     enableDescription?: boolean
     enableAddButton?: boolean
 }
 
-const ProductsClient: React.FC<UsersTableClient> = ({ data, title, enableDescription = true, enableAddButton = true }) => {
+const UsersClient: React.FC<UsersTableClient> = ({ data, title, enableDescription = true, enableAddButton = true }) => {
 
     const router = useRouter();
 
@@ -42,4 +42,4 @@ const ProductsClient: React.FC<UsersTableClient> = ({ data, title, enableDescrip
     )
 }
 
-export default ProductsClient
+export default UsersClient

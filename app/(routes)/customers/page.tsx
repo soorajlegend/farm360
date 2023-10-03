@@ -13,7 +13,7 @@ const MainPage = () => {
             name: user?.name,
             mobile: user?.phone,
             allProductsCount: userProducts.length,
-            allProductsWeight: `${userProducts.reduce((sum, prod) => sum + prod.weight, 0)} Kg`,
+            allProductsWeight: userProducts.reduce((sum, prod) => sum + prod.weight, 0),
             createdAt: userProducts[0]?.dateAdded || ""
     }
     })
@@ -21,7 +21,9 @@ const MainPage = () => {
     return (
         <div className='w-full h-full flex items-center justify-center'>
             <div className="w-full max-w-7xl mx-auto ">
-                <UsersClient data={formattedUsers}/>
+                <UsersClient
+                title='Customers'
+                data={formattedUsers}/>
             </div>
         </div>
     )

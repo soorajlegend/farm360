@@ -26,7 +26,6 @@ export interface UserProduct {
   dateCollected: string | null;
 }
 
-// users/farmers only
 export interface User {
   id: string;
   clerkId: string;
@@ -35,6 +34,7 @@ export interface User {
   email: string;
   image: string;
   address: string;
+  userType?: number;
   dateRegistered: string;
 }
 
@@ -44,12 +44,14 @@ export interface Request {
   userMobile: string;
   userImage: string;
   userAddress: string;
-  entityId: string;
-  entityName: string;
-  entityMobile: string;
-  entityImage: string;
-  entityAddress: string;
-  weight: string | null //(for product only in kg units)
+  orgId: string;
+  orgName: string;
+  orgMobile: string;
+  orgImage: string;
+  orgAddress: string;
+  itemId: string;
+  itemName: string;
+  weight: number | null //(for product only in kg units)
   duration: string | null //(for tool only)
   type: number; // define the request is for a product or tool
   status: "read" | "unread"; // define the status of the request read || unread

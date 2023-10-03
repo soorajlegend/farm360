@@ -35,15 +35,15 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
                     <DropdownMenuLabel>
                         Actions
                     </DropdownMenuLabel>
-                    <DropdownMenuItem onClick={() => router.push(`/users/${data.id}`)}>
+                    <DropdownMenuItem onClick={() => router.push(`/customers/${data.id}/view`)}>
                         <View className="mr-2 h-4 w-4" />
-                        View All
+                        View Details
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push(`/save/${data.id}`)}>
+                    <DropdownMenuItem onClick={() => router.push(`/customers/${data.id}/save`)}>
                         <Plus className="mr-2 h-4 w-4" />
                         Save
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push(`/withdraw/${data.id}`)}>
+                    <DropdownMenuItem onClick={() => router.push(`/customers/${data.id}/withdraw`)}>
                         <ExternalLink className="mr-2 h-4 w-4" />
                         Withdraw
                     </DropdownMenuItem>

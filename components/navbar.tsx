@@ -61,7 +61,7 @@ const Navbar = () => {
     ]
 
     return (
-        <div className='flex py-2 top-0 px-4 fixed w-full  h-screen md:h-16 md:items-center '>
+        <div className='flex py-2 top-0 px-4 fixed w-full border-b h-screen md:h-16 md:items-center bg-white z-50'>
             <div className="w-full  max-w-7xl mx-auto flex flex-col md:flex-row gap-3">
                 {
                     navigation
@@ -72,7 +72,7 @@ const Navbar = () => {
                                 key={i}
                                 className={cn(
                                     'px-3 hover:bg-teal-700 hover:text-white rounded-full py-2 w-full md:w-auto transition',
-                                    nav.active && "bg-teal-900/10"
+                                    nav.active && "rounded-none text-teal-900 border-b-2 border-teal-800/80 hover:bg-transparent hover:text-teal-800"
                                 )}
                             >
                                 {nav.title}

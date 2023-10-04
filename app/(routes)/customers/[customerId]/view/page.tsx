@@ -2,7 +2,7 @@ import React from 'react'
 import ProductsClient from '../../components/client'
 import { users, warehouseProducts } from '@/data'
 import { Separator } from '@/components/ui/separator'
-import WarehouseProductCard from '@/components/warehouse-product-card'
+import WarehouseProductCard from '@/components/product-card'
 import { UsersColumnForWarehouse } from '../../components/columns'
 import CustomerCard from '@/components/customer-card'
 

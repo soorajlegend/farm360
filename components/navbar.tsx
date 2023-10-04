@@ -2,60 +2,74 @@
 import { cn } from '@/lib/utils';
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useData } from './providers/content-provider';
 
 const Navbar = () => {
 
     const pathname = usePathname();
 
-    const userType = "warehouse"
+    const { user } = useData();
+
 
     const navigation = [
         {
             title: "Overview",
             route: "/main",
-            type: ["general"],
+            type: [0],
             active: pathname === '/main'
         },
         {
             title: "Products",
             route: "/products",
-            type: ["warehouse"],
+            type: [2],
             active: pathname === '/products'
         },
         {
             title: "My Storage",
             route: "/storage",
-            type: ["user"],
+            type: [1],
             active: pathname === '/storage'
         },
         {
             title: "Tools",
             route: "/tools",
-            type: ["lender"],
+            type: [3],
             active: pathname === '/tools'
         },
         {
             title: "Customers",
             route: "/customers",
-            type: ["warehouse", "lender"],
+            type: [2, 3],
             active: pathname === '/customers'
         },
         {
             title: "Warehouses",
             route: "/warehouses",
-            type: ["user"],
+            type: [1],
             active: pathname === '/warehouses'
         },
+        // {
+        //     title: "Borrow Tools",
+        //     route: "/borrow",
+        //     type: [1],
+        //     active: pathname === '/warehouses'
+        // },
         {
             title: "Requests",
             route: "/requests",
-            type: ["warehouse", "lender"],
+            type: [2,3],
+            active: pathname === '/requests'
+        },
+        {
+            title: "Requests",
+            route: "/user-requests",
+            type: [1],
             active: pathname === '/requests'
         },
         {
             title: "History",
             route: "/history",
-            type: ["general"],
+            type: [0],
             active: pathname === '/history'
         },
     ]
@@ -65,7 +79,7 @@ const Navbar = () => {
             <div className="w-full  max-w-7xl mx-auto flex flex-col md:flex-row gap-3">
                 {
                     navigation
-                        .filter((nav) => nav.type.includes("general") || nav.type.includes(userType))
+                        .filter((nav) => nav.type.includes(0) || nav.type.includes(user?.userType || 0))
                         .map((nav, i) => (
                             <Link
                                 href={nav.route}

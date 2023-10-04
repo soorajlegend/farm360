@@ -26,7 +26,7 @@ import { requests, warehouseProducts } from "@/data"
 
 const formSchema = z.object({
     product: z.string().min(1, {
-        message: "Select your account type"
+        message: "Select a product"
     }),
     weight: z.coerce.number().min(1, {
         message: "Weight must be at least 1 KG"

@@ -71,6 +71,7 @@ export const warehouseProducts: WarehouseProduct[] = [
 export const userProducts: UserProduct[] = [
   {
     id: "1",
+    itemId: "4",
     name: "Wheat",
     warehouseId: "1234567890",
     warehouseName: "John Doe's Warehouse",
@@ -80,10 +81,10 @@ export const userProducts: UserProduct[] = [
     weight: 100,
     status: 1,
     dateAdded: "2023-08-04T12:00:00.000Z",
-    dateCollected: null,
   },
   {
     id: "2",
+    itemId: "2",
     name: "Rice",
     warehouseId: "9876543210",
     warehouseName: "Jane Doe's Warehouse",
@@ -93,10 +94,10 @@ export const userProducts: UserProduct[] = [
     weight: 50,
     status: 2,
     dateAdded: "2023-08-05T12:00:00.000Z",
-    dateCollected: null,
   },
   {
     id: "3",
+    itemId: "3",
     name: "Corn",
     warehouseId: "1111111111",
     warehouseName: "Peter Jones's Warehouse",
@@ -106,10 +107,10 @@ export const userProducts: UserProduct[] = [
     weight: 75,
     status: 3,
     dateAdded: "2023-08-06T12:00:00.000Z",
-    dateCollected: null,
   },
   {
     id: "4",
+    itemId: "5",
     name: "Soybeans",
     warehouseId: "2222222222",
     warehouseName: "Mary Johnson's Warehouse",
@@ -119,10 +120,10 @@ export const userProducts: UserProduct[] = [
     weight: 25,
     status: 4,
     dateAdded: "2023-08-07T12:00:00.000Z",
-    dateCollected: null,
   },
   {
     id: "5",
+    itemId: "6",
     name: "Oats",
     warehouseId: "3333333333",
     warehouseName: "David Smith's Warehouse",
@@ -132,7 +133,6 @@ export const userProducts: UserProduct[] = [
     weight: 150,
     status: 5,
     dateAdded: "2023-08-08T12:00:00.000Z",
-    dateCollected: null,
   },
 ];
 

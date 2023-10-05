@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Input } from "../ui/input"
-import { requests, userProducts, users, warehouseProducts } from "@/data"
+import { userProducts } from "@/data"
 
 
 const formSchema = z.object({
@@ -37,7 +37,7 @@ const formSchema = z.object({
 })
 
 
-const NewWarehouseRequestForm = ({ defaultItem }: { defaultItem?: string, request?: boolean }) => {
+const NewWarehouseRequestForm = ({ defaultItem }: { defaultItem?: string }) => {
 
     const [isMounted, setIsMounted] = useState(false)
     const router = useRouter();
@@ -122,7 +122,7 @@ const NewWarehouseRequestForm = ({ defaultItem }: { defaultItem?: string, reques
         // } catch (err) {
         //     console.log(err)
         // }
-        router.push("/products")
+        router.push("/storage")
     }
 
     if (!isMounted) {
@@ -250,7 +250,7 @@ const NewWarehouseRequestForm = ({ defaultItem }: { defaultItem?: string, reques
                                 disabled={isLoading}
                                 variant="primary"
                             >
-                                Save
+                                Send
                             </Button>
                         </DialogFooter>
                     </form>

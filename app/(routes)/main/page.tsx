@@ -86,10 +86,10 @@ const MainPage = () => {
                                     {card.title}
                                 </h1>
                             </div>
-                            <h1 className=' text-white font-bold text-6xl w-full text-end px-5'>
+                            <h1 className='font-bold text-6xl w-full text-end px-5'>
                                 {card.amount}
                             </h1>
-                            <div className="absolute bg-gradient-to-t from-teal-900 to-teal-500  w-full h-full skew-x-[-45deg] translate-x-[50%] -z-10" />
+                            <div className="absolute bg-gradient-to-t from-teal-400 to-teal-800  w-full h-full skew-x-[-80deg] translate-y-[20%] translate-x-[95%] -z-10" />
                         </Link>
                     ))
                 }

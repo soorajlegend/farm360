@@ -189,6 +189,59 @@ export const users: User[] = [
   },
 ];
 
+export const warehouses: User[] = [
+  {
+    id: "1",
+    clerkId: "1234567890",
+    name: "John Doe's Warehouse",
+    phone: "+15555555555",
+    email: "john.doe@example.com",
+    image: "https://example.com/john-doe-warehouse.png",
+    address: "123 Main Street, Anytown, CA 91234",
+    dateRegistered: "2023-08-01T12:00:00.000Z"
+  },
+  {
+    id: "2",
+    clerkId: "9876543210",
+    name: "Jane Doe's Warehouse",
+    phone: "+15555555556",
+    email: "jane.doe@example.com",
+    image: "https://example.com/jane-doe-warehouse.png",
+    address: "456 Elm Street, Anytown, CA 91234",
+    dateRegistered: "2023-08-02T12:00:00.000Z"
+  },
+  {
+    id: "3",
+    clerkId: "1111111111",
+    name: "Peter Jones's Warehouse",
+    phone: "+15555555557",
+    email: "peter.jones@example.com",
+    image: "https://example.com/peter-jones-warehouse.png",
+    address: "789 Oak Street, Anytown, CA 91234",
+    dateRegistered: "2023-08-03T12:00:00.000Z"
+  },
+  {
+    id: "4",
+    clerkId: "2222222222",
+    name: "Mary Johnson's Warehouse",
+    phone: "+15555555558",
+    email: "mary.johnson@example.com",
+    image: "https://example.com/mary-johnson-warehouse.png",
+    address: "1011 Maple Street, Anytown, CA 91234",
+    dateRegistered: "2023-08-04T12:00:00.000Z"
+  },
+  {
+    id: "5",
+    clerkId: "3333333333",
+    name: "David Smith's Warehouse",
+    phone: "+15555555559",
+    email: "david.smith@example.com",
+    image: "https://example.com/david-smith-warehouse.png",
+    address: "1213 Cedar Street, Anytown, CA 91234",
+    dateRegistered: "2023-08-05T12:00:00.000Z"
+  }
+]
+
 export const requests: Request[] = [
   {
     id: "1",

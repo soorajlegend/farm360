@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation"
 import { ExternalLink, MoreHorizontal, Plus, View } from "lucide-react"
-import axios from "axios"
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"

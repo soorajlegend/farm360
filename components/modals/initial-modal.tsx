@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Textarea } from "../ui/textarea"
+import { useData } from "../providers/content-provider"
 
 
 const formSchema = z.object({
@@ -41,22 +42,23 @@ const InitialModal = () => {
 
     const [isMounted, setIsMounted] = useState(false)
     const router = useRouter();
-    
+    const { user } = useData();
 
-        const accountTypes = [
-            {
-                value: 1,
-                name: "Warehouse"
-            },
-            {
-                value: 2,
-                name: "Tools Lender"
-            },
-            {
-                value: 3,
-                name: "user/farmer"
-            }
-        ]
+
+    const accountTypes = [
+        {
+            value: 1,
+            name: "Warehouse"
+        },
+        {
+            value: 2,
+            name: "Tools Lender"
+        },
+        {
+            value: 3,
+            name: "user/farmer"
+        }
+    ]
 
     useEffect(() => {
         setIsMounted(true)
@@ -71,18 +73,21 @@ const InitialModal = () => {
         }
     })
 
+    if(user){
+        router.push("/main")
+    }
+
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        // try {
-        //     await axios.post("/api/servers", values)
-
-        //     form.reset();
-        //     router.refresh();
-        //     window.location.reload();
-        // } catch (err) {
-        //     console.log(err)
-        // }
+        try {
+            await axios.post(`${process.env.NEXT_PUBLIC_FARM360_API_ROUTE}/register.php`, values)
+            form.reset();
+            router.refresh();
+            window.location.reload();
+        } catch (err) {
+            console.log(err)
+        }
         router.push("/main")
     }
 
@@ -105,7 +110,7 @@ const InitialModal = () => {
                         className="space-y-8"
                     >
                         <div className="space-y-8 px-6">
-                        <FormField
+                            <FormField
                                 control={form.control}
                                 name="type"
                                 render={({ field }) => (
@@ -170,7 +175,7 @@ const InitialModal = () => {
                                 disabled={isLoading}
                                 variant="primary"
                             >
-                               Proceed
+                                Proceed
                             </Button>
                         </DialogFooter>
                     </form>

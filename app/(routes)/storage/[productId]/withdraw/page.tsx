@@ -1,10 +1,10 @@
-import WithdrawProductForm from '@/components/forms/withdraw-product-form'
+import WithdrawProductRequestForm from "@/components/forms/withdraw-request-form"
 
 const WithdrawProduct = ({ params }: { params: { productId: string } }) => {
 
     return (
         <div className='w-full h-full flex items-center justify-center'>
-            <WithdrawProductForm defaultItem={params?.productId} />
+            <WithdrawProductRequestForm defaultItem={params?.productId} />
         </div>
     )
 }

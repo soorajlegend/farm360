@@ -4,11 +4,11 @@ export default function Page() {
   return <SignUp
     appearance={{
       elements: {
-        formButtonPrimary: 'hover:bg-blue-600 transition-color text-slate-100 text-sm normal-case',
+        formButtonPrimary: 'hover:bg-teal-600/80 transition-color text-white text-sm normal-case',
 
       },
       variables: {
-        colorPrimary: "rgb(37 99 235 / 0.9)"
+        colorPrimary: "rgb(20 184 166)"
       }
     }}
   />;

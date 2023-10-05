@@ -31,7 +31,7 @@ const ProductsClient: React.FC<UsersTableClient> = ({ data, title, enableDescrip
                 {
                     enableAddButton && <Button
                         variant="primary"
-                        onClick={() => router.push(`/products/new`)} >
+                        onClick={() => router.push(`/storage/new`)} >
                         <Plus className="mr-2 h-4" />
                         Add New
                     </Button>

@@ -1,11 +1,11 @@
 import React from 'react'
-import NewProductForm from '@/components/forms/new-product-form'
+import NewWarehouseRequestForm from '@/components/forms/warehouse-request-form'
 
 const NewProduct = () => {
 
     return (
         <div className='w-full h-full flex items-center justify-center'>
-           <NewProductForm />
+           <NewWarehouseRequestForm />
         </div>
     )
 }

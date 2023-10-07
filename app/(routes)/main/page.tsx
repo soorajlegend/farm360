@@ -1,33 +1,68 @@
+"use client"
+import { useData } from '@/components/providers/content-provider'
 import { requests, users, warehouseProducts } from '@/data'
-import { History, MessageCircle, Package, Users } from 'lucide-react'
+import { History, MessageCircle, Package, Settings, Store, Users } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
 
 const MainPage = () => {
+
+    const { user } = useData();
 
     const cards = [
         {
             title: "Products",
             amount: warehouseProducts.length,
             route: "/products",
+            type: [2],
+            icon: <Package className='w-8 h-8' />
+        },
+        {
+            title: "My Storage",
+            amount: warehouseProducts.length,
+            route: "/storage",
+            type: [1],
             icon: <Package className='w-8 h-8' />
         },
         {
             title: "Customers",
             amount: users.length,
             route: "/customers",
+            type: [2],
             icon: <Users className='w-8 h-8' />
         },
+        {
+            title: "Warehouses",
+            amount: users.length,
+            route: "/warehouses",
+            type: [0],
+            icon: <Store className='w-8 h-8' />
+        },
+        // {
+        //     title: "Tools",
+        //     amount: users.length,
+        //     route: "/borrow",
+        //     type: [1],
+        //     icon: <Settings className='w-8 h-8' />
+        // },
         {
             title: "Requests",
             amount: requests.filter((req) => req.status === "read").length,
             route: "/requests",
+            type: [2,3],
+            icon: <MessageCircle className='w-8 h-8' />
+        },
+        {
+            title: "Requests",
+            amount: requests.filter((req) => req.status === "read").length,
+            route: "/user-requests",
+            type: [1],
             icon: <MessageCircle className='w-8 h-8' />
         },
         {
             title: "History",
             amount: requests.filter((req) => req.status === "unread").length,
             route: "/history",
+            type: [0],
             icon: <History className='w-8 h-8' />
         },
     ]
@@ -37,7 +72,9 @@ const MainPage = () => {
         <div className='w-full h-full flex items-center justify-center'>
             <div className="w-full max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
                 {
-                    cards.map((card, i) => (
+                    cards
+                    .filter((item) => item.type.includes(0) || item.type.includes(user?.userType || 0))
+                    .map((card, i) => (
                         <Link
                             key={i}
                             href={card.route}
@@ -49,10 +86,10 @@ const MainPage = () => {
                                     {card.title}
                                 </h1>
                             </div>
-                            <h1 className=' text-white font-bold text-6xl w-full text-end px-5'>
+                            <h1 className='font-bold text-6xl w-full text-end px-5'>
                                 {card.amount}
                             </h1>
-                            <div className="absolute bg-gradient-to-t from-teal-900 to-teal-500  w-full h-full skew-x-[-45deg] translate-x-[50%] -z-10" />
+                            <div className="absolute bg-gradient-to-t from-teal-400 to-teal-800  w-full h-full skew-x-[-80deg] translate-y-[20%] translate-x-[95%] -z-10" />
                         </Link>
                     ))
                 }

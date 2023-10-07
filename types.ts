@@ -14,6 +14,7 @@ export interface WarehouseProduct {
 
 export interface UserProduct {
   id: string;
+  itemId: string;
   name: string;
   warehouseId: string;
   warehouseName: string;
@@ -23,7 +24,6 @@ export interface UserProduct {
   weight: number;
   status: number;
   dateAdded: string;
-  dateCollected: string | null;
 }
 
 export interface User {

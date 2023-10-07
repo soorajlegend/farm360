@@ -21,72 +21,43 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Input } from "../ui/input"
-import { requests, users, warehouseProducts, warehouses } from "@/data"
+import { requests, userProducts, warehouseProducts } from "@/data"
 
 
-const formSchema = z.object({
-    product: z.string().min(1, {
-        message: "Select a product"
-    }),
-    weight: z.coerce.number().min(1, {
-        message: "Weight must be at least 1 KG"
-    }),
-    warehouse: z.string().min(3, {
-        message: "Input the onwer mobile number"
-    }),
-})
-
-
-const NewProductForm = ({ defaultItem, request, isWarehouse }: { defaultItem?: string, request?: boolean, isWarehouse?: boolean }) => {
+const WithdrawProductRequestForm = ({ defaultItem }: { defaultItem: string }) => {
+    
+    const activeProduct = userProducts.find((item) => item?.id === defaultItem)
+    
+    const formSchema = z.object({
+        product: z.string().min(1, {
+            message: "Select a product"
+        }),
+        weight: z.coerce.number().min(1, {
+            message: "Weight must be at least 1 KG"
+        }).max(activeProduct?.weight || 10000, {
+            message: "Insufficient weight"
+        }),
+    })
 
     const [isMounted, setIsMounted] = useState(false)
     const router = useRouter();
 
 
-    const products = [
-        {
-            value: "1",
-            name: "Apple"
-        },
-        {
-            value: "2",
-            name: "Rice"
-        },
-        {
-            value: "3",
-            name: "Corn"
-        },
-        {
-            value: "4",
-            name: "Wheat"
-        },
-        {
-            value: "5",
-            name: "Soybeans"
-        },
-        {
-            value: "6",
-            name: "Oats"
-        },
-    ]
+    const products = userProducts.map((item) => ({
+        value: item.id,
+        name: item.name
+    }))
 
     useEffect(() => {
         setIsMounted(true)
     }, [])
 
-    const activeCustomer = users.find((user) => user?.id === defaultItem)
-
-    const activeRequest = requests.find(req => req.id === defaultItem);
-
-    const activeWarehouse = warehouses.find(warehouse => warehouse.id === defaultItem);
-
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            product: request ? activeRequest?.itemId || "" : "",
-            weight: request ? activeRequest?.weight || 0 : 0,
-            warehouse: isWarehouse ? activeWarehouse?.phone || "" : request ? activeRequest?.userMobile || "" : activeCustomer?.phone || ""
+            product: defaultItem || "",
+            weight: activeProduct?.weight || 0,
         }
     })
 
@@ -102,7 +73,7 @@ const NewProductForm = ({ defaultItem, request, isWarehouse }: { defaultItem?: s
         // } catch (err) {
         //     console.log(err)
         // }
-        router.push("/products")
+        router.push("/storage")
     }
 
     if (!isMounted) {
@@ -115,7 +86,7 @@ const NewProductForm = ({ defaultItem, request, isWarehouse }: { defaultItem?: s
                 className="bg-white dark:bg-zinc-800 text-black dark:text-zinc-300 p-0 overflow-hidden">
                 <div className="pt-8 px-6">
                     <h2 className="text-2xl text-center font-bold">
-                        Save Product
+                        Withdrawal request
                     </h2>
                 </div>
                 <Form {...form}>
@@ -184,33 +155,14 @@ const NewProductForm = ({ defaultItem, request, isWarehouse }: { defaultItem?: s
                                     </FormItem>
                                 )}
                             />
-                            <FormField
-                                control={form.control}
-                                name="warehouse"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className=
-                                            "uppercase text-sm font-bold text-slate-500 dark:text-slate-400 w-full flex">warehouse Mobile Number</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                disabled={isLoading}
-                                                className="bg-gray-100 dark:bg-slate-900/50 border-0 focus-visible:ring-0 text-black dark:text-slate-200 focus-visible:ring-offset-0"
-                                                placeholder="warehouse Mobile Number"
-                                                type="tel"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage className="dark:text-rose-500" />
-                                    </FormItem>
-                                )}
-                            />
+
                         </div>
                         <DialogFooter className="bg-zinc-100 dark:bg-zinc-900/50 px-6 py-4">
                             <Button
                                 disabled={isLoading}
                                 variant="primary"
                             >
-                                Save
+                                Send
                             </Button>
                         </DialogFooter>
                     </form>
@@ -220,4 +172,4 @@ const NewProductForm = ({ defaultItem, request, isWarehouse }: { defaultItem?: s
     )
 }
 
-export default NewProductForm
+export default WithdrawProductRequestForm

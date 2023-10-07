@@ -25,6 +25,8 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Textarea } from "../ui/textarea"
+import { useData } from "../providers/content-provider"
+import { useUser } from "@clerk/nextjs"
 
 
 const formSchema = z.object({
@@ -41,22 +43,24 @@ const InitialModal = () => {
 
     const [isMounted, setIsMounted] = useState(false)
     const router = useRouter();
-    
+    const { user, setUser } = useData();
+    const { user: clerkUser } = useUser();
 
-        const accountTypes = [
-            {
-                value: 1,
-                name: "Warehouse"
-            },
-            {
-                value: 2,
-                name: "Tools Lender"
-            },
-            {
-                value: 3,
-                name: "user/farmer"
-            }
-        ]
+
+    const accountTypes = [
+        {
+            value: 1,
+            name: "Warehouse"
+        },
+        {
+            value: 2,
+            name: "Tools Lender"
+        },
+        {
+            value: 3,
+            name: "user/farmer"
+        }
+    ]
 
     useEffect(() => {
         setIsMounted(true)
@@ -71,20 +75,59 @@ const InitialModal = () => {
         }
     })
 
+    if (user) {
+        router.push("/main")
+    }
+
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        // try {
-        //     await axios.post("/api/servers", values)
+        try {
+            const apiUrl = 'https://ibkhaleal.000webhostapp.com/farm360/api/register.php';
+            const userData = {
+                name: `${clerkUser?.firstName} ${clerkUser?.lastName}`,
+                clerkId: clerkUser?.id,
+                phone: clerkUser?.phoneNumbers[0]?.phoneNumber,
+                email: clerkUser?.emailAddresses[0]?.emailAddress,
+                image: clerkUser?.imageUrl,
+                address: values?.address,
+                utype: values?.type
+            };
 
-        //     form.reset();
-        //     router.refresh();
-        //     window.location.reload();
-        // } catch (err) {
-        //     console.log(err)
-        // }
-        router.push("/main")
+            // Send a POST request to the endpoint with the user data
+            const axios = require('axios');
+            let data = JSON.stringify(userData);
+
+            let config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: apiUrl,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'accept': 'application/json'
+                },
+                data: data
+            };
+
+            axios.request(config)
+                .then((response: any) => {
+                    const data = response.data;
+                    if (data?.id) {
+                        setUser(data);
+                        router.push("/main");
+                    }
+                    console.log(JSON.stringify(data));
+                })
+                .catch((error: any) => {
+                    console.log(error);
+                });
+
+        } catch (error) {
+            // Handle request errors or other exceptions
+            console.error('Error:', error);
+        }
     }
+
 
     if (!isMounted) {
         return null
@@ -105,7 +148,7 @@ const InitialModal = () => {
                         className="space-y-8"
                     >
                         <div className="space-y-8 px-6">
-                        <FormField
+                            <FormField
                                 control={form.control}
                                 name="type"
                                 render={({ field }) => (
@@ -170,7 +213,7 @@ const InitialModal = () => {
                                 disabled={isLoading}
                                 variant="primary"
                             >
-                               Proceed
+                                Proceed
                             </Button>
                         </DialogFooter>
                     </form>

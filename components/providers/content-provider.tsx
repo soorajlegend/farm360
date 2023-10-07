@@ -1,4 +1,6 @@
 'use client'
+import { fetchUserByClerkId } from "@/actions/fetch-user-info";
+import { fetchData } from "@/lib/fetch";
 import { User } from "@/types";
 import { useAuth } from "@clerk/nextjs";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -12,7 +14,7 @@ export type DataContextType = {
 
 const DataContext = createContext<DataContextType>({
     user: null,
-    setUser: () => {}
+    setUser: () => { }
 });
 
 type DataProviderProps = {
@@ -24,11 +26,27 @@ export const DataProvider = ({ children }: DataProviderProps) => {
 
     const { userId } = useAuth();
 
-
     useEffect(() => {
-        
-    }, [])
 
+        if(!userId){
+            return
+        }
+
+        const getUserData = async () => {
+          try {
+            const userData = await fetchUserByClerkId(userId);
+    
+            setUser(userData);
+          } catch (error) {
+            console.error('Error fetching user data:', error);
+          }
+        };
+    
+        getUserData();
+      }, [userId]);
+    
+
+  
     // const user =   {
     //     id: "1",
     //     clerkId: "1234567890",
@@ -41,11 +59,11 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     //     dateRegistered: "2023-08-01T12:00:00.000Z",
     //   }
 
-return (
-    <DataContext.Provider value={{ user, setUser }}>
-        {children}
-    </DataContext.Provider>
-);
+    return (
+        <DataContext.Provider value={{ user, setUser }}>
+            {children}
+        </DataContext.Provider>
+    );
 };
 
 export const useData = (): DataContextType => useContext(DataContext);

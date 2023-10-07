@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Textarea } from "../ui/textarea"
 import { useData } from "../providers/content-provider"
+import { useUser } from "@clerk/nextjs"
 
 
 const formSchema = z.object({
@@ -42,7 +43,8 @@ const InitialModal = () => {
 
     const [isMounted, setIsMounted] = useState(false)
     const router = useRouter();
-    const { user } = useData();
+    const { user, setUser } = useData();
+    const { user: clerkUser } = useUser();
 
 
     const accountTypes = [
@@ -73,7 +75,7 @@ const InitialModal = () => {
         }
     })
 
-    if(user){
+    if (user) {
         router.push("/main")
     }
 
@@ -81,15 +83,51 @@ const InitialModal = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            await axios.post(`${process.env.NEXT_PUBLIC_FARM360_API_ROUTE}/register.php`, values)
-            form.reset();
-            router.refresh();
-            window.location.reload();
-        } catch (err) {
-            console.log(err)
+            const apiUrl = 'https://ibkhaleal.000webhostapp.com/farm360/api/register.php';
+            const userData = {
+                name: `${clerkUser?.firstName} ${clerkUser?.lastName}`,
+                clerkId: clerkUser?.id,
+                phone: clerkUser?.phoneNumbers[0]?.phoneNumber,
+                email: clerkUser?.emailAddresses[0]?.emailAddress,
+                image: clerkUser?.imageUrl,
+                address: values?.address,
+                utype: values?.type
+            };
+
+            // Send a POST request to the endpoint with the user data
+            const axios = require('axios');
+            let data = JSON.stringify(userData);
+
+            let config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: apiUrl,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'accept': 'application/json'
+                },
+                data: data
+            };
+
+            axios.request(config)
+                .then((response: any) => {
+                    const data = response.data;
+                    if (data?.id) {
+                        setUser(data);
+                        router.push("/main");
+                    }
+                    console.log(JSON.stringify(data));
+                })
+                .catch((error: any) => {
+                    console.log(error);
+                });
+
+        } catch (error) {
+            // Handle request errors or other exceptions
+            console.error('Error:', error);
         }
-        router.push("/main")
     }
+
 
     if (!isMounted) {
         return null

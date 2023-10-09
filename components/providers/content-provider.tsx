@@ -1,6 +1,5 @@
 'use client'
 import { fetchUserByClerkId } from "@/actions/fetch-user-info";
-import { fetchData } from "@/lib/fetch";
 import { User } from "@/types";
 import { useAuth } from "@clerk/nextjs";
 import { createContext, useContext, useEffect, useState } from "react";

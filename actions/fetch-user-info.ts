@@ -1,6 +1,6 @@
 export async function fetchUserByClerkId(clerkId: string) {
     try {
-      const response = await fetch(`http://ibkhaleal.000webhostapp.com/farm360/api/get-user-info.php`, {
+      const response = await fetch(`https://asibiti.ng/farm360/api/get-user-info.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

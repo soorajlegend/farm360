@@ -50,15 +50,15 @@ const InitialModal = () => {
     const accountTypes = [
         {
             value: 1,
-            name: "Warehouse"
+            name: "User/Farmer"
         },
         {
             value: 2,
-            name: "Tools Lender"
+            name: "Warehouse"
         },
         {
             value: 3,
-            name: "user/farmer"
+            name: "Tools Lender"
         }
     ]
 
@@ -83,7 +83,7 @@ const InitialModal = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            const apiUrl = 'https://ibkhaleal.000webhostapp.com/farm360/api/register.php';
+            const apiUrl = 'https://asibiti.ng/farm360/api/register.php';
             const userData = {
                 name: `${clerkUser?.firstName} ${clerkUser?.lastName}`,
                 clerkId: clerkUser?.id,

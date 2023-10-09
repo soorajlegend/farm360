@@ -27,6 +27,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Textarea } from "../ui/textarea"
 import { useData } from "../providers/content-provider"
 import { useUser } from "@clerk/nextjs"
+import { Loader2 } from "lucide-react"
 
 
 const formSchema = z.object({
@@ -43,7 +44,7 @@ const InitialModal = () => {
 
     const [isMounted, setIsMounted] = useState(false)
     const router = useRouter();
-    const { user, setUser } = useData();
+    const { user, setUser, isLoading: isLoadingUser } = useData();
     const { user: clerkUser } = useUser();
 
 
@@ -77,6 +78,14 @@ const InitialModal = () => {
 
     if (user) {
         router.push("/main")
+    }
+
+    if (isLoadingUser) {
+        return (
+            <div className="w-full h-full flex justify-center items-center">
+                <Loader2 className="w-10 h-10 animate-spin text-teal-700/80" />
+            </div>
+        )
     }
 
     const isLoading = form.formState.isSubmitting;
@@ -132,6 +141,8 @@ const InitialModal = () => {
     if (!isMounted) {
         return null
     }
+
+
 
     return (
         <Dialog open>

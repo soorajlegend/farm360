@@ -7,62 +7,65 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 
 export type DataContextType = {
-    user: User | null;
-    setUser: (user: User) => void;
+  isLoading: boolean
+  user: User | null;
+  setUser: (user: User) => void;
 };
 
 const DataContext = createContext<DataContextType>({
-    user: null,
-    setUser: () => { }
+  isLoading: false,
+  user: null,
+  setUser: () => { }
 });
 
 type DataProviderProps = {
-    children: React.ReactNode;
+  children: React.ReactNode;
 };
 
 export const DataProvider = ({ children }: DataProviderProps) => {
-    const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsloading] = useState<boolean>(false);
 
-    const { userId } = useAuth();
+  const { userId } = useAuth();
 
-    useEffect(() => {
+  useEffect(() => {
 
-        if(!userId){
-            return
-        }
+    if (!userId) {
+      return
+    }
 
-        const getUserData = async () => {
-          try {
-            const userData = await fetchUserByClerkId(userId);
-    
-            setUser(userData);
-          } catch (error) {
-            console.error('Error fetching user data:', error);
-          }
-        };
-    
-        getUserData();
-      }, [userId]);
-    
+    const getUserData = async () => {
+      try {
+        setIsloading(true)
+        const userData = await fetchUserByClerkId(userId);
+        setUser(userData);
+        setIsloading(false)
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    getUserData();
+  }, [userId]);
 
-  
-    // const user =   {
-    //     id: "1",
-    //     clerkId: "1234567890",
-    //     name: "John Doe",
-    //     phone: "+15555555555",
-    //     email: "john.doe@example.com",
-    //     image: "https://example.com/john-doe.png",
-    //     address: "123 Main Street, Anytown, CA 91234",
-    //     userType: 1,
-    //     dateRegistered: "2023-08-01T12:00:00.000Z",
-    //   }
 
-    return (
-        <DataContext.Provider value={{ user, setUser }}>
-            {children}
-        </DataContext.Provider>
-    );
+
+  // const user =   {
+  //     id: "1",
+  //     clerkId: "1234567890",
+  //     name: "John Doe",
+  //     phone: "+15555555555",
+  //     email: "john.doe@example.com",
+  //     image: "https://example.com/john-doe.png",
+  //     address: "123 Main Street, Anytown, CA 91234",
+  //     userType: 1,
+  //     dateRegistered: "2023-08-01T12:00:00.000Z",
+  //   }
+
+  return (
+    <DataContext.Provider value={{ user, setUser, isLoading }}>
+      {children}
+    </DataContext.Provider>
+  );
 };
 
 export const useData = (): DataContextType => useContext(DataContext);

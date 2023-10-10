@@ -34,7 +34,7 @@ export interface User {
   email: string;
   image: string;
   address: string;
-  userType?: number;
+  utype?: string;
   dateRegistered: string;
 }
 

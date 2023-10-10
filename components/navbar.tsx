@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useData } from './providers/content-provider';
 import { UserButton } from '@clerk/nextjs';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 const Navbar = () => {
 
@@ -13,69 +14,72 @@ const Navbar = () => {
 
     const { user } = useData();
 
-    if (!user) {
-        router.push("/")
-    }
+    useEffect(() => {
+        if (!user) {
+            router.push("/")
+        }
+    }, []);
 
+    
     const navigation = [
         {
             title: "Overview",
             route: "/main",
-            type: [0],
+            type: ["0"],
             active: pathname === '/main'
         },
         {
             title: "Products",
             route: "/products",
-            type: [2],
+            type: ["2"],
             active: pathname === '/products'
         },
         {
             title: "My Storage",
             route: "/storage",
-            type: [1],
+            type: ["1"],
             active: pathname === '/storage'
         },
         {
             title: "Tools",
             route: "/tools",
-            type: [3],
+            type: ["3"],
             active: pathname === '/tools'
         },
         {
             title: "Customers",
             route: "/customers",
-            type: [2, 3],
+            type: ["2", "3"],
             active: pathname === '/customers'
         },
         {
             title: "Warehouses",
             route: "/warehouses",
-            type: [1],
+            type: ["1"],
             active: pathname === '/warehouses'
         },
         // {
         //     title: "Borrow Tools",
         //     route: "/borrow",
-        //     type: [1],
+        //     type: ["1"],
         //     active: pathname === '/warehouses'
         // },
         {
             title: "Requests",
             route: "/requests",
-            type: [2, 3],
+            type: ["2", "3"],
             active: pathname === '/requests'
         },
         {
             title: "Requests",
             route: "/user-requests",
-            type: [1],
+            type: ["1"],
             active: pathname === '/requests'
         },
         {
             title: "History",
             route: "/history",
-            type: [0],
+            type: ["0"],
             active: pathname === '/history'
         },
     ]
@@ -93,7 +97,7 @@ const Navbar = () => {
 
                 {
                     navigation
-                        .filter((nav) => nav.type.includes(0) || nav.type.includes(user?.userType || 0))
+                        .filter((nav) => nav.type.includes("0") || nav.type.includes(user?.utype || "0"))
                         .map((nav, i) => (
                             <Link
                                 href={nav.route}

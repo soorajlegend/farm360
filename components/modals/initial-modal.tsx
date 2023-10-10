@@ -4,7 +4,6 @@ import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useEffect, useState } from "react"
-import axios from "axios"
 
 import {
     Dialog,
@@ -27,6 +26,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Textarea } from "../ui/textarea"
 import { useData } from "../providers/content-provider"
 import { useUser } from "@clerk/nextjs"
+import { Loader2 } from "lucide-react"
 
 
 const formSchema = z.object({
@@ -43,22 +43,22 @@ const InitialModal = () => {
 
     const [isMounted, setIsMounted] = useState(false)
     const router = useRouter();
-    const { user, setUser } = useData();
+    const { user, setUser, isLoading: isLoadingUser } = useData();
     const { user: clerkUser } = useUser();
 
 
     const accountTypes = [
         {
             value: 1,
-            name: "Warehouse"
+            name: "User/Farmer"
         },
         {
             value: 2,
-            name: "Tools Lender"
+            name: "Warehouse"
         },
         {
             value: 3,
-            name: "user/farmer"
+            name: "Tools Lender"
         }
     ]
 
@@ -79,11 +79,22 @@ const InitialModal = () => {
         router.push("/main")
     }
 
+    if (isLoadingUser || user) {
+        return (
+            <div className="w-full h-full flex justify-center items-center">
+                <Loader2 className="w-10 h-10 animate-spin text-teal-700/80" />
+            </div>
+        )
+    }
+
+
+
+
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            const apiUrl = 'https://ibkhaleal.000webhostapp.com/farm360/api/register.php';
+            const apiUrl = 'https://asibiti.ng/farm360/api/register.php';
             const userData = {
                 name: `${clerkUser?.firstName} ${clerkUser?.lastName}`,
                 clerkId: clerkUser?.id,
@@ -132,6 +143,8 @@ const InitialModal = () => {
     if (!isMounted) {
         return null
     }
+
+
 
     return (
         <Dialog open>

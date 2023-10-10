@@ -1,9 +1,13 @@
+"use client"
+
 import React from 'react'
 import ProductsClient from './components/client'
-import { users, warehouseProducts } from '@/data'
 import { ProductsColumnForWarehouse } from './components/columns'
+import { useData } from '@/components/providers/content-provider'
 
 const MainPage = () => {
+
+    const {warehouseProducts} = useData();
 
     const formattedProducts: ProductsColumnForWarehouse[] = warehouseProducts.map(prod => {
         return {
@@ -21,7 +25,8 @@ const MainPage = () => {
             <div className="w-full max-w-7xl mx-auto ">
                 <ProductsClient
                     title='Products'
-                    data={formattedProducts} />
+                    data={formattedProducts}
+                     />
             </div>
         </div>
     )

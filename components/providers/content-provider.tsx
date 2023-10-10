@@ -1,6 +1,6 @@
 'use client'
-import { fetchUserByClerkId } from "@/actions/fetch-user-info";
-import { User } from "@/types";
+import { fetcher } from "@/actions/fetch-util";
+import { User, WarehouseProduct } from "@/types";
 import { useAuth } from "@clerk/nextjs";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -10,12 +10,14 @@ export type DataContextType = {
   isLoading: boolean
   user: User | null;
   setUser: (user: User) => void;
+  warehouseProducts: WarehouseProduct[]
 };
 
 const DataContext = createContext<DataContextType>({
   isLoading: false,
   user: null,
-  setUser: () => { }
+  setUser: () => { },
+  warehouseProducts: []
 });
 
 type DataProviderProps = {
@@ -23,8 +25,9 @@ type DataProviderProps = {
 };
 
 export const DataProvider = ({ children }: DataProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsloading] = useState<boolean>(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [warehouseProducts, setWarehouseProducts] = useState<WarehouseProduct[]>([]);
 
   const { userId } = useAuth();
 
@@ -35,17 +38,35 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     }
 
     const getUserData = async () => {
+      setIsloading(true)
       try {
-        setIsloading(true)
-        const userData = await fetchUserByClerkId(userId);
+        const userData = await fetcher({ id: userId }, "get-user-info.php");
         setUser(userData);
-        setIsloading(false)
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
+      setIsloading(false)
     };
+
     getUserData();
   }, [userId]);
+
+  useEffect(() => {
+    const getWarehouseProducts = async () => {
+      setIsloading(true)
+      try {
+        const products = await fetcher({ userId }, "get-products.php");
+        setWarehouseProducts(products);
+      } catch (error) {
+        console.error('Error fetching warehouses products:', error);
+      }
+      setIsloading(false)
+    };
+
+    if (user?.utype === "2") {
+      getWarehouseProducts();
+    }
+  }, [user])
 
 
 
@@ -62,7 +83,7 @@ export const DataProvider = ({ children }: DataProviderProps) => {
   //   }
 
   return (
-    <DataContext.Provider value={{ user, setUser, isLoading }}>
+    <DataContext.Provider value={{ user, setUser, isLoading, warehouseProducts }}>
       {children}
     </DataContext.Provider>
   );

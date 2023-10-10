@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useData } from './providers/content-provider';
 import { UserButton } from '@clerk/nextjs';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 const Navbar = () => {
 
@@ -13,10 +14,13 @@ const Navbar = () => {
 
     const { user } = useData();
 
-    if (!user) {
-        router.push("/")
-    }
+    useEffect(() => {
+        if (!user) {
+            router.push("/")
+        }
+    }, []);
 
+    
     const navigation = [
         {
             title: "Overview",

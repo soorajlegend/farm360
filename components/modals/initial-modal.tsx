@@ -4,7 +4,6 @@ import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useEffect, useState } from "react"
-import axios from "axios"
 
 import {
     Dialog,
@@ -80,13 +79,16 @@ const InitialModal = () => {
         router.push("/main")
     }
 
-    if (isLoadingUser) {
+    if (isLoadingUser || user) {
         return (
             <div className="w-full h-full flex justify-center items-center">
                 <Loader2 className="w-10 h-10 animate-spin text-teal-700/80" />
             </div>
         )
     }
+
+
+
 
     const isLoading = form.formState.isSubmitting;
 

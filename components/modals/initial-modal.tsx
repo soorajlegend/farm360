@@ -68,7 +68,7 @@ const InitialModal = () => {
             return;
         }
         setIsMounted(true)
-    }, [user, clerkUser])
+    }, [clerkUser])
 
 
     if (user && !user?.error) {

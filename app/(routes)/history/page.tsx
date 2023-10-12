@@ -11,7 +11,7 @@ const MainPage = () => {
 
     const { user } = useData();
 
-    const formattedRequests: RequestColumn[] = user?.userType === 1 ? [] : requests.filter((item) => item.status === "read" && item.type === 1).map(req => {
+    const formattedRequests: RequestColumn[] = user?.utype === "1" ? [] : requests.filter((item) => item.status === "read" && item.type === 1).map(req => {
         return {
             id: req?.id,
             userName: req?.userName,
@@ -23,7 +23,7 @@ const MainPage = () => {
         }
     })
 
-    const formattedUserRequests: RequestUserColumn[] = user?.userType !== 1 ? [] : requests.filter((item) => item.status === "read").map(req => {
+    const formattedUserRequests: RequestUserColumn[] = user?.utype !== "1" ? [] : requests.filter((item) => item.status === "read").map(req => {
         return {
             id: req?.id,
             orgName: req?.orgName,
@@ -41,11 +41,11 @@ const MainPage = () => {
     return (
         <div className='w-full h-full flex items-center justify-center'>
             <div className="w-full max-w-7xl mx-auto ">
-                {user?.userType !== 1 && <ProductsClient
+                {user?.utype !== "1" && <ProductsClient
                     title='History'
                     data={formattedRequests}
                 />}
-                {user?.userType === 1 && <RequestClient
+                {user?.utype === "1" && <RequestClient
                     title='History'
                     data={formattedUserRequests} />}
             </div>

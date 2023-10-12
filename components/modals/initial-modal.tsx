@@ -27,9 +27,13 @@ import { Textarea } from "../ui/textarea"
 import { useData } from "../providers/content-provider"
 import { useUser } from "@clerk/nextjs"
 import { Loader2 } from "lucide-react"
+import { Input } from "../ui/input"
 
 
 const formSchema = z.object({
+    mobile: z.string().min(10, {
+        message: "Enter Mobile Number"
+    }),
     type: z.string().min(1, {
         message: "Select your account type"
     }),
@@ -42,6 +46,7 @@ const formSchema = z.object({
 const InitialModal = () => {
 
     const [isMounted, setIsMounted] = useState(false)
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter();
     const { user, setUser, isLoading: isLoadingUser } = useData();
     const { user: clerkUser } = useUser();
@@ -71,6 +76,7 @@ const InitialModal = () => {
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            mobile: clerkUser?.phoneNumbers[0]?.phoneNumber || "",
             type: "",
             address: ""
         }
@@ -94,11 +100,12 @@ const InitialModal = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
+            setIsSubmitting(true)
             const apiUrl = 'https://asibiti.ng/farm360/api/register.php';
             const userData = {
                 name: `${clerkUser?.firstName} ${clerkUser?.lastName}`,
                 clerkId: clerkUser?.id,
-                phone: clerkUser?.phoneNumbers[0]?.phoneNumber,
+                phone: values.mobile,
                 email: clerkUser?.emailAddresses[0]?.emailAddress,
                 image: clerkUser?.imageUrl,
                 address: values?.address,
@@ -132,7 +139,7 @@ const InitialModal = () => {
                 .catch((error: any) => {
                     console.log(error);
                 });
-
+                setIsSubmitting(false)
         } catch (error) {
             // Handle request errors or other exceptions
             console.error('Error:', error);
@@ -161,6 +168,25 @@ const InitialModal = () => {
                         className="space-y-8"
                     >
                         <div className="space-y-8 px-6">
+                         <FormField
+                                control={form.control}
+                                name="mobile"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel className=
+                                            "uppercase text-sm font-bold text-slate-500 dark:text-slate-400 w-full flex">Mobile Number</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                disabled={isSubmitting}
+                                                className="bg-gray-100 dark:bg-slate-900/50 border-0 focus-visible:ring-0 text-black dark:text-slate-200 focus-visible:ring-offset-0"
+                                                placeholder="+123456789"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage className="dark:text-rose-500" />
+                                    </FormItem>
+                                )}
+                            />
                             <FormField
                                 control={form.control}
                                 name="type"
@@ -171,7 +197,7 @@ const InitialModal = () => {
                                             Type
                                         </FormLabel>
                                         <Select
-                                            disabled={isLoading}
+                                            disabled={isSubmitting}
                                             onValueChange={field.onChange}
                                             defaultValue={field.value}
                                         >
@@ -210,7 +236,7 @@ const InitialModal = () => {
                                             "uppercase text-sm font-bold text-slate-500 dark:text-slate-400 w-full flex">Address</FormLabel>
                                         <FormControl>
                                             <Textarea
-                                                disabled={isLoading}
+                                                disabled={isSubmitting}
                                                 className="bg-gray-100 dark:bg-slate-900/50 border-0 focus-visible:ring-0 text-black dark:text-slate-200 focus-visible:ring-offset-0"
                                                 placeholder={"address"}
                                                 {...field}
@@ -223,7 +249,7 @@ const InitialModal = () => {
                         </div>
                         <DialogFooter className="bg-zinc-100 dark:bg-zinc-900/50 px-6 py-4">
                             <Button
-                                disabled={isLoading}
+                                disabled={isSubmitting}
                                 variant="primary"
                             >
                                 Proceed

@@ -46,7 +46,11 @@ const InitialModal = () => {
     const { user, setUser, isLoading: isLoadingUser } = useData();
     const { user: clerkUser } = useUser();
 
+    useEffect(() => {
+        setIsMounted(true)
+    }, [])
 
+    
     const accountTypes = [
         {
             value: 1,
@@ -63,19 +67,13 @@ const InitialModal = () => {
     ]
 
 
-    useEffect(() => {
-        if(isMounted){
-            return;
-        }
-        setIsMounted(true)
-    }, [clerkUser])
-
 
     if (user && !user?.error) {
         router.push("/main")
     }
 
-    if (isLoadingUser || !user?.error) {
+    if (isLoadingUser || !user?.error || isMounted) {
+        console.log(isMounted, "MUTED");
         return (
             <div className="w-full h-full flex justify-center items-center">
                 <Loader2 className="w-10 h-10 animate-spin text-teal-700/80" />
@@ -142,9 +140,9 @@ const InitialModal = () => {
     }
 
 
-    if (!isMounted) {
-        return null
-    }
+    // if (!isMounted) {
+    //     return null
+    // }
 
 
 

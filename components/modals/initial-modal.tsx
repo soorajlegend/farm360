@@ -75,7 +75,7 @@ const InitialModal = () => {
         }
     })
 
-    if (user) {
+    if (user?.id) {
         router.push("/main")
     }
 

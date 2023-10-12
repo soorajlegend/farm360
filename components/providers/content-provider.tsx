@@ -70,10 +70,15 @@ export const DataProvider = ({ children }: DataProviderProps) => {
   }, [userId])
 
   useEffect(() => {
+
+    if(!user){
+      return;
+    }
+
     const getWarehouseProducts = async () => {
       setIsloading(true)
       try {
-        const products = await fetcher({ userId }, "get-products.php");
+        const products = await fetcher({ userId: user?.id }, "get-products.php");
         setWarehouseProducts(products);
       } catch (error) {
         console.error('Error fetching warehouses products:', error);

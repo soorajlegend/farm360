@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Input } from "../ui/input"
-import { requests, users, warehouseProducts, warehouses } from "@/data"
+import { requests, users, warehouses } from "@/data"
 import { useData } from "../providers/content-provider"
 
 
@@ -32,7 +32,7 @@ const formSchema = z.object({
     weight: z.coerce.number().min(1, {
         message: "Weight must be at least 1 KG"
     }),
-    warehouse: z.string().min(3, {
+    mobile: z.string().min(3, {
         message: "Input the onwer mobile number"
     }),
 })
@@ -42,7 +42,7 @@ const NewProductForm = ({ defaultItem, request, isWarehouse }: { defaultItem?: s
 
     const [isMounted, setIsMounted] = useState(false)
     const router = useRouter();
-    const { defaultProducts } = useData();
+    const { defaultProducts, user } = useData();
 
 
     const products = defaultProducts.map(prod => ({
@@ -66,23 +66,32 @@ const NewProductForm = ({ defaultItem, request, isWarehouse }: { defaultItem?: s
         defaultValues: {
             product: request ? activeRequest?.itemId || "" : "",
             weight: request ? activeRequest?.weight || 0 : 0,
-            warehouse: isWarehouse ? activeWarehouse?.phone || "" : request ? activeRequest?.userMobile || "" : activeCustomer?.phone || ""
+            mobile: isWarehouse ? activeWarehouse?.phone || "" : request ? activeRequest?.userMobile || "" : activeCustomer?.phone || ""
         }
     })
 
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        // try {
-        //     await axios.post("/api/servers", values)
+        try {
+            await axios.post("https://asibiti.ng/farm360/api/save-product.php", {
+                userMobile: values?.mobile,
+                orgMobile: user?.phone,
+                productId: values.product,
+                weight: values.weight
+            })
+            // .then(() => {
+            //     form.reset();
+            //     router.refresh();
+            //     window.location.reload();
+            // })
+            // .finally(() => {
+            //     router.push("/products")
+            // })
 
-        //     form.reset();
-        //     router.refresh();
-        //     window.location.reload();
-        // } catch (err) {
-        //     console.log(err)
-        // }
-        router.push("/products")
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     if (!isMounted) {
@@ -166,7 +175,7 @@ const NewProductForm = ({ defaultItem, request, isWarehouse }: { defaultItem?: s
                             />
                             <FormField
                                 control={form.control}
-                                name="warehouse"
+                                name="mobile"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className=
@@ -175,7 +184,7 @@ const NewProductForm = ({ defaultItem, request, isWarehouse }: { defaultItem?: s
                                             <Input
                                                 disabled={isLoading}
                                                 className="bg-gray-100 dark:bg-slate-900/50 border-0 focus-visible:ring-0 text-black dark:text-slate-200 focus-visible:ring-offset-0"
-                                                placeholder="warehouse Mobile Number"
+                                                placeholder="Mobile Number"
                                                 type="tel"
                                                 {...field}
                                             />

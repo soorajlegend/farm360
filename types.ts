@@ -7,9 +7,8 @@ export interface WarehouseProduct {
   ownerImage: string;
   ownerAddress: string;
   weight: number;
-  status: number;
+  status?: number;
   dateAdded: string;
-  dateCollected: string | null;
 }
 
 export interface UserProduct {

@@ -22,6 +22,7 @@ import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Input } from "../ui/input"
 import { requests, users, warehouseProducts, warehouses } from "@/data"
+import { useData } from "../providers/content-provider"
 
 
 const formSchema = z.object({
@@ -41,34 +42,13 @@ const NewProductForm = ({ defaultItem, request, isWarehouse }: { defaultItem?: s
 
     const [isMounted, setIsMounted] = useState(false)
     const router = useRouter();
+    const { defaultProducts } = useData();
 
 
-    const products = [
-        {
-            value: "1",
-            name: "Apple"
-        },
-        {
-            value: "2",
-            name: "Rice"
-        },
-        {
-            value: "3",
-            name: "Corn"
-        },
-        {
-            value: "4",
-            name: "Wheat"
-        },
-        {
-            value: "5",
-            name: "Soybeans"
-        },
-        {
-            value: "6",
-            name: "Oats"
-        },
-    ]
+    const products = defaultProducts.map(prod => ({
+        value: prod.id,
+        name: prod.name
+    }))
 
     useEffect(() => {
         setIsMounted(true)

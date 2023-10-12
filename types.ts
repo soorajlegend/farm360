@@ -51,10 +51,17 @@ export interface Request {
   orgAddress: string;
   itemId: string;
   itemName: string;
-  weight: number | null //(for product only in kg units)
-  duration: string | null //(for tool only)
+  weight: number | null; //(for product only in kg units)
+  duration: string | null; //(for tool only)
   type: number; // define the request is for a product or tool
   status: "read" | "unread"; // define the status of the request read || unread
   isIncoming: boolean; // saving, borrow = true, withdrawal = false
   dateAdded: string;
+}
+
+export interface DefaultProduct {
+  id: string;
+  name: string;
+  image: string;
+  date_added: string;
 }

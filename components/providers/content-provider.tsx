@@ -1,8 +1,9 @@
 'use client'
-import { fetcher } from "@/actions/fetch-util";
+import { GET, fetcher } from "@/actions/fetch-util";
 import { User, WarehouseProduct } from "@/types";
 import { useAuth } from "@clerk/nextjs";
 import { createContext, useContext, useEffect, useState } from "react";
+import { DefaultProduct } from '../../types';
 
 
 
@@ -10,14 +11,17 @@ export type DataContextType = {
   isLoading: boolean
   user: User | null;
   setUser: (user: User) => void;
-  warehouseProducts: WarehouseProduct[]
+  warehouseProducts: WarehouseProduct[],
+  defaultProducts: DefaultProduct[]
 };
+
 
 const DataContext = createContext<DataContextType>({
   isLoading: false,
   user: null,
   setUser: () => { },
-  warehouseProducts: []
+  warehouseProducts: [],
+  defaultProducts: []
 });
 
 type DataProviderProps = {
@@ -28,6 +32,7 @@ export const DataProvider = ({ children }: DataProviderProps) => {
   const [isLoading, setIsloading] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
   const [warehouseProducts, setWarehouseProducts] = useState<WarehouseProduct[]>([]);
+  const [defaultProducts, setDefaultProducts] = useState<DefaultProduct[]>([]);
 
   const { userId } = useAuth();
 
@@ -50,6 +55,19 @@ export const DataProvider = ({ children }: DataProviderProps) => {
 
     getUserData();
   }, [userId]);
+
+  useEffect(() => {
+    const getDefaultProducts = async () => {
+      try {
+        const defaultproducts = await GET("fetch-prods.php");
+        setDefaultProducts(defaultproducts);
+      } catch (error) {
+        console.error('Error fetching default products data:', error);
+      }
+    };
+    
+    getDefaultProducts();
+  }, [userId])
 
   useEffect(() => {
     const getWarehouseProducts = async () => {
@@ -83,7 +101,7 @@ export const DataProvider = ({ children }: DataProviderProps) => {
   //   }
 
   return (
-    <DataContext.Provider value={{ user, setUser, isLoading, warehouseProducts }}>
+    <DataContext.Provider value={{ user, setUser, isLoading, warehouseProducts, defaultProducts }}>
       {children}
     </DataContext.Provider>
   );

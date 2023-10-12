@@ -68,6 +68,15 @@ const InitialModal = () => {
 
 
 
+    const form = useForm({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            type: "",
+            address: ""
+        }
+    })
+
+
     if (user && !user?.error) {
         router.push("/main")
     }
@@ -80,15 +89,6 @@ const InitialModal = () => {
             </div>
         )
     }
-
-    const form = useForm({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            type: "",
-            address: ""
-        }
-    })
-
 
     const isLoading = form.formState.isSubmitting;
 

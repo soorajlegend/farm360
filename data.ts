@@ -12,7 +12,6 @@ export const warehouseProducts: WarehouseProduct[] = [
     weight: 100,
     status: 1,
     dateAdded: "2023-08-04T12:00:00.000Z",
-    dateCollected: null,
   },
   {
     id: "2",
@@ -25,7 +24,6 @@ export const warehouseProducts: WarehouseProduct[] = [
     weight: 50,
     status: 2,
     dateAdded: "2023-08-05T12:00:00.000Z",
-    dateCollected: null,
   },
   {
     id: "3",
@@ -38,7 +36,6 @@ export const warehouseProducts: WarehouseProduct[] = [
     weight: 75,
     status: 3,
     dateAdded: "2023-08-06T12:00:00.000Z",
-    dateCollected: null,
   },
   {
     id: "4",
@@ -51,7 +48,6 @@ export const warehouseProducts: WarehouseProduct[] = [
     weight: 25,
     status: 4,
     dateAdded: "2023-08-07T12:00:00.000Z",
-    dateCollected: null,
   },
   {
     id: "5",
@@ -64,7 +60,6 @@ export const warehouseProducts: WarehouseProduct[] = [
     weight: 150,
     status: 5,
     dateAdded: "2023-08-08T12:00:00.000Z",
-    dateCollected: null,
   },
 ];
 

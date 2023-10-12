@@ -14,7 +14,7 @@ const MainPage = () => {
 
     // Iterate through the userProducts array and add users to the map
     warehouseProducts.forEach((userProduct) => {
-        distinctCustomersMap[userProduct.id] = userProduct;
+        distinctCustomersMap[userProduct.ownerId] = userProduct;
     });
 
     // Get an array of distinct users from the map

@@ -36,6 +36,7 @@ export interface User {
   address: string;
   utype?: string;
   dateRegistered: string;
+  error?: string;
 }
 
 export interface Request {

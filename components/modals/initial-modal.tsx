@@ -82,7 +82,7 @@ const InitialModal = () => {
     }
 
     if (isLoadingUser || !user?.error || isMounted) {
-        console.log(isMounted, "MUTED");
+        console.log(isMounted, "MUTED", isLoadingUser, " Is loading", user?.error, "ERROR");
         return (
             <div className="w-full h-full flex justify-center items-center">
                 <Loader2 className="w-10 h-10 animate-spin text-teal-700/80" />

@@ -62,18 +62,14 @@ const InitialModal = () => {
         }
     ]
 
+
     useEffect(() => {
-        setIsMounted(true)
-    }, [])
-
-
-    const form = useForm({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            type: "",
-            address: ""
+        if(isMounted){
+            return;
         }
-    })
+        setIsMounted(true)
+    }, [user, clerkUser])
+
 
     if (user && !user?.error) {
         router.push("/main")
@@ -87,7 +83,13 @@ const InitialModal = () => {
         )
     }
 
-
+    const form = useForm({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            type: "",
+            address: ""
+        }
+    })
 
 
     const isLoading = form.formState.isSubmitting;

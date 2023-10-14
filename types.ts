@@ -1,5 +1,6 @@
 export interface WarehouseProduct {
   id: string;
+  itemId: string;
   name: string;
   ownerId: string;
   ownerName: string;

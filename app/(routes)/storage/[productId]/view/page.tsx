@@ -1,11 +1,13 @@
+"use client"
 import React from 'react'
 import ProductsClient from '../../components/client'
-import { userProducts } from '@/data'
 import { Separator } from '@/components/ui/separator'
 import ProductCard from '@/components/product-card'
+import { useData } from '@/components/providers/content-provider'
 
 const ViewProductPage = ({ params }: { params: { productId: string } }) => {
 
+    const { userProducts} = useData();
     
     const activeProduct = userProducts.find(item => item.id === params?.productId )
 

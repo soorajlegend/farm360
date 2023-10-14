@@ -1,13 +1,13 @@
 "use client"
 import { useData } from '@/components/providers/content-provider'
-import { requests, userProducts, users } from '@/data'
+import { requests } from '@/data'
 import { WarehouseProduct } from '@/types'
 import { History, MessageCircle, Package, Store, Users } from 'lucide-react'
 import Link from 'next/link'
 
 const MainPage = () => {
 
-    const { user, warehouseProducts } = useData();
+    const { user, warehouseProducts, userProducts, warehouses } = useData();
 
     // Create a map to store distinct users based on their IDs
     const distinctCustomersMap: Record<string, WarehouseProduct> = {};
@@ -45,7 +45,7 @@ const MainPage = () => {
         },
         {
             title: "Warehouses",
-            amount: users.length,
+            amount: warehouses.length,
             route: "/warehouses",
             type: ["0"],
             icon: <Store className='w-8 h-8' />

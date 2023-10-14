@@ -21,7 +21,8 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Input } from "../ui/input"
-import { requests, warehouseProducts } from "@/data"
+import { requests } from "@/data"
+import { useData } from "../providers/content-provider"
 
 
 const formSchema = z.object({
@@ -40,41 +41,20 @@ const formSchema = z.object({
 const WithdrawProductForm = ({ defaultItem, customer, request }: { defaultItem?: string, customer?: boolean, request?: boolean }) => {
 
     const [isMounted, setIsMounted] = useState(false)
+    const { defaultProducts, user, warehouseProducts, getWarehouseProducts } = useData();
     const router = useRouter();
 
 
-    const products = [
-        {
-            value: 1,
-            name: "Apple"
-        },
-        {
-            value: 2,
-            name: "Rice"
-        },
-        {
-            value: 3,
-            name: "Corn"
-        },
-        {
-            value: 4,
-            name: "Wheat"
-        },
-        {
-            value: 5,
-            name: "Soybeans"
-        },
-        {
-            value: 6,
-            name: "Oats"
-        },
-    ]
 
+    const products = defaultProducts.map(prod => ({
+        value: prod.id,
+        name: prod.name
+    }))
     useEffect(() => {
         setIsMounted(true)
     }, [])
 
-    const activeProduct = warehouseProducts.find((item) => customer ? item?.ownerId === defaultItem : item?.id === defaultItem)
+    const activeProduct = warehouseProducts.find((item) => customer ? item?.id === defaultItem : item?.id === defaultItem)
     const activeRequest = requests.find(req => req.id === defaultItem);
 
     const form = useForm({
@@ -84,7 +64,7 @@ const WithdrawProductForm = ({ defaultItem, customer, request }: { defaultItem?:
                 ? activeRequest?.itemId || ""
                 : customer
                     ? ""
-                    : defaultItem || "",
+                    : activeProduct?.itemId || "",
             weight: request
                 ? activeRequest?.weight || 0
                 : customer
@@ -99,16 +79,24 @@ const WithdrawProductForm = ({ defaultItem, customer, request }: { defaultItem?:
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        // try {
-        //     await axios.post("/api/servers", values)
+        try {
+            await axios.post(" https://asibiti.ng/farm360/api/withdraw-prod.php", {
+                userMobile: values?.owner,
+                orgMobile: user?.phone,
+                productId: values.product,
+                weight: values.weight
+            })
+            .then(() => {
+                form.reset();
+                getWarehouseProducts();
+            })
+            .finally(() => {
+                router.push("/products")
+            })
 
-        //     form.reset();
-        //     router.refresh();
-        //     window.location.reload();
-        // } catch (err) {
-        //     console.log(err)
-        // }
-        router.push("/products")
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     if (!isMounted) {

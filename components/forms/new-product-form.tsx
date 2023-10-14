@@ -42,7 +42,7 @@ const NewProductForm = ({ defaultItem, request, isWarehouse }: { defaultItem?: s
 
     const [isMounted, setIsMounted] = useState(false)
     const router = useRouter();
-    const { defaultProducts, user } = useData();
+    const { defaultProducts, user, warehouseProducts, getWarehouseProducts } = useData();
 
 
     const products = defaultProducts.map(prod => ({
@@ -54,7 +54,7 @@ const NewProductForm = ({ defaultItem, request, isWarehouse }: { defaultItem?: s
         setIsMounted(true)
     }, [])
 
-    const activeCustomer = users.find((user) => user?.id === defaultItem)
+    const activeCustomer = warehouseProducts.find((user) => user?.id === defaultItem)
 
     const activeRequest = requests.find(req => req.id === defaultItem);
 
@@ -66,7 +66,7 @@ const NewProductForm = ({ defaultItem, request, isWarehouse }: { defaultItem?: s
         defaultValues: {
             product: request ? activeRequest?.itemId || "" : "",
             weight: request ? activeRequest?.weight || 0 : 0,
-            mobile: isWarehouse ? activeWarehouse?.phone || "" : request ? activeRequest?.userMobile || "" : activeCustomer?.phone || ""
+            mobile: isWarehouse ? activeWarehouse?.phone || "" : request ? activeRequest?.userMobile || "" : activeCustomer?.ownerMobile || ""
         }
     })
 
@@ -80,14 +80,13 @@ const NewProductForm = ({ defaultItem, request, isWarehouse }: { defaultItem?: s
                 productId: values.product,
                 weight: values.weight
             })
-            // .then(() => {
-            //     form.reset();
-            //     router.refresh();
-            //     window.location.reload();
-            // })
-            // .finally(() => {
-            //     router.push("/products")
-            // })
+            .then(() => {
+                form.reset();
+                getWarehouseProducts();
+            })
+            .finally(() => {
+                router.push("/products")
+            })
 
         } catch (err) {
             console.log(err)

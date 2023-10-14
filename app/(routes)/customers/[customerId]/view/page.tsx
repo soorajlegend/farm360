@@ -1,37 +1,37 @@
-import React from 'react'
+"use client"
+ import React from 'react'
 import ProductsClient from '../../components/client'
-import { users, warehouseProducts } from '@/data'
 import { Separator } from '@/components/ui/separator'
-import WarehouseProductCard from '@/components/product-card'
-import { UsersColumnForWarehouse } from '../../components/columns'
 import CustomerCard from '@/components/customer-card'
+import { useData } from '@/components/providers/content-provider'
+import { WarehouseProduct } from '@/types'
 
 const ViewUserPage = ({ params }: { params: { customerId: string } }) => {
 
+    const { warehouseProducts } = useData();
 
-    const formattedUsers: UsersColumnForWarehouse[] = users.filter(user => user.id !== params?.customerId).map(user => {
-        const userProducts = warehouseProducts.filter((prod) => prod.ownerId === user.id);
+     // Create a map to store distinct users based on their IDs
+     const distinctCustomersMap: Record<string, WarehouseProduct> = {};
 
-        return {
-            id: user?.id,
-            name: user?.name,
-            mobile: user?.phone,
-            allProductsCount: userProducts.length,
-            allProductsWeight: userProducts.reduce((sum, prod) => sum + prod.weight, 0),
-            createdAt: userProducts[0]?.dateAdded || ""
-        }
-    })
+     // Iterate through the userProducts array and add users to the map
+     warehouseProducts.forEach((userProduct) => {
+         distinctCustomersMap[userProduct.ownerId] = userProduct;
+     });
+ 
+     // Get an array of distinct users from the map
+     const distinctCustomers: WarehouseProduct[] = Object.values(distinctCustomersMap);
+ 
 
-    const activeUser = users.find(item => item.id === params?.customerId)
-    const activeUserProducts = warehouseProducts.filter((prod) => prod.ownerId === activeUser?.id);
+    const activeUser = distinctCustomers.find(item => item.id === params?.customerId)
+    const activeUserProducts = warehouseProducts.filter((prod) => prod.ownerId === activeUser?.ownerId);
     const activeUserData = {
         id: activeUser?.id!,
-        name: activeUser?.name!,
-        mobile: activeUser?.phone!,
-        image: activeUser?.image!,
-        address: activeUser?.address!,
+        name: activeUser?.ownerName!,
+        mobile: activeUser?.ownerMobile!,
+        image: activeUser?.ownerImage!,
+        address: activeUser?.ownerAddress!,
         allProductsCount: activeUserProducts.length,
-        allProductsWeight: activeUserProducts.reduce((sum, prod) => sum + prod.weight, 0),
+        allProductsWeight: activeUserProducts.reduce((sum, prod) => sum + Number(prod.weight), 0),
         createdAt: activeUserProducts[0]?.dateAdded || ""
     }
     return (
@@ -42,8 +42,7 @@ const ViewUserPage = ({ params }: { params: { customerId: string } }) => {
                 <ProductsClient
                     title='Other Products'
                     enableAddButton={false}
-                    enableDescription={false}
-                    data={formattedUsers} />
+                    enableDescription={false} />
             </div>
         </div>
     )

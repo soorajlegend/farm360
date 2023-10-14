@@ -13,6 +13,7 @@ export type DataContextType = {
   setUser: (user: User) => void;
   warehouseProducts: WarehouseProduct[],
   defaultProducts: DefaultProduct[]
+  getWarehouseProducts: () => void;
 };
 
 
@@ -21,7 +22,8 @@ const DataContext = createContext<DataContextType>({
   user: null,
   setUser: () => { },
   warehouseProducts: [],
-  defaultProducts: []
+  defaultProducts: [],
+  getWarehouseProducts: () => {}
 });
 
 type DataProviderProps = {
@@ -65,26 +67,26 @@ export const DataProvider = ({ children }: DataProviderProps) => {
         console.error('Error fetching default products data:', error);
       }
     };
-    
+
     getDefaultProducts();
   }, [userId])
 
+  const getWarehouseProducts = async () => {
+    setIsloading(true)
+    try {
+      const products = await fetcher({ userId: user?.id }, "get-products.php");
+      setWarehouseProducts(products);
+    } catch (error) {
+      console.error('Error fetching warehouses products:', error);
+    }
+    setIsloading(false)
+  };
+
   useEffect(() => {
 
-    if(!user){
+    if (!user) {
       return;
     }
-
-    const getWarehouseProducts = async () => {
-      setIsloading(true)
-      try {
-        const products = await fetcher({ userId: user?.id }, "get-products.php");
-        setWarehouseProducts(products);
-      } catch (error) {
-        console.error('Error fetching warehouses products:', error);
-      }
-      setIsloading(false)
-    };
 
     if (user?.utype === "2") {
       getWarehouseProducts();
@@ -106,7 +108,7 @@ export const DataProvider = ({ children }: DataProviderProps) => {
   //   }
 
   return (
-    <DataContext.Provider value={{ user, setUser, isLoading, warehouseProducts, defaultProducts }}>
+    <DataContext.Provider value={{ user, setUser, isLoading, warehouseProducts, defaultProducts, getWarehouseProducts }}>
       {children}
     </DataContext.Provider>
   );

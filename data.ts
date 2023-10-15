@@ -1,67 +1,67 @@
-import { User, UserProduct, WarehouseProduct, Request } from "./types";
+import { User, UserProduct, WarehouseProduct, Request, Chat } from "./types";
 
-export const warehouseProducts: WarehouseProduct[] = [
-  {
-    id: "1",
-    name: "Wheat",
-    ownerId: "5",
-    ownerName: "John Doe",
-    ownerMobile: "+15555555555",
-    ownerImage: "https://example.com/john-doe.png",
-    ownerAddress: "123 Main Street, Anytown, CA 91234",
-    weight: 100,
-    status: 1,
-    dateAdded: "2023-08-04T12:00:00.000Z",
-  },
-  {
-    id: "2",
-    name: "Rice",
-    ownerId: "4",
-    ownerName: "Jane Doe",
-    ownerMobile: "+15555555556",
-    ownerImage: "https://example.com/jane-doe.png",
-    ownerAddress: "456 Elm Street, Anytown, CA 91234",
-    weight: 50,
-    status: 2,
-    dateAdded: "2023-08-05T12:00:00.000Z",
-  },
-  {
-    id: "3",
-    name: "Corn",
-    ownerId: "3",
-    ownerName: "Peter Jones",
-    ownerMobile: "+15555555557",
-    ownerImage: "https://example.com/peter-jones.png",
-    ownerAddress: "789 Oak Street, Anytown, CA 91234",
-    weight: 75,
-    status: 3,
-    dateAdded: "2023-08-06T12:00:00.000Z",
-  },
-  {
-    id: "4",
-    name: "Soybeans",
-    ownerId: "2",
-    ownerName: "Mary Johnson",
-    ownerMobile: "+15555555558",
-    ownerImage: "https://example.com/mary-johnson.png",
-    ownerAddress: "1011 Maple Street, Anytown, CA 91234",
-    weight: 25,
-    status: 4,
-    dateAdded: "2023-08-07T12:00:00.000Z",
-  },
-  {
-    id: "5",
-    name: "Oats",
-    ownerId: "1",
-    ownerName: "David Smith",
-    ownerMobile: "+15555555559",
-    ownerImage: "https://example.com/david-smith.png",
-    ownerAddress: "1213 Cedar Street, Anytown, CA 91234",
-    weight: 150,
-    status: 5,
-    dateAdded: "2023-08-08T12:00:00.000Z",
-  },
-];
+// export const warehouseProducts: WarehouseProduct[] = [
+//   {
+//     id: "1",
+//     name: "Wheat",
+//     ownerId: "5",
+//     ownerName: "John Doe",
+//     ownerMobile: "+15555555555",
+//     ownerImage: "https://example.com/john-doe.png",
+//     ownerAddress: "123 Main Street, Anytown, CA 91234",
+//     weight: 100,
+//     status: 1,
+//     dateAdded: "2023-08-04T12:00:00.000Z",
+//   },
+//   {
+//     id: "2",
+//     name: "Rice",
+//     ownerId: "4",
+//     ownerName: "Jane Doe",
+//     ownerMobile: "+15555555556",
+//     ownerImage: "https://example.com/jane-doe.png",
+//     ownerAddress: "456 Elm Street, Anytown, CA 91234",
+//     weight: 50,
+//     status: 2,
+//     dateAdded: "2023-08-05T12:00:00.000Z",
+//   },
+//   {
+//     id: "3",
+//     name: "Corn",
+//     ownerId: "3",
+//     ownerName: "Peter Jones",
+//     ownerMobile: "+15555555557",
+//     ownerImage: "https://example.com/peter-jones.png",
+//     ownerAddress: "789 Oak Street, Anytown, CA 91234",
+//     weight: 75,
+//     status: 3,
+//     dateAdded: "2023-08-06T12:00:00.000Z",
+//   },
+//   {
+//     id: "4",
+//     name: "Soybeans",
+//     ownerId: "2",
+//     ownerName: "Mary Johnson",
+//     ownerMobile: "+15555555558",
+//     ownerImage: "https://example.com/mary-johnson.png",
+//     ownerAddress: "1011 Maple Street, Anytown, CA 91234",
+//     weight: 25,
+//     status: 4,
+//     dateAdded: "2023-08-07T12:00:00.000Z",
+//   },
+//   {
+//     id: "5",
+//     name: "Oats",
+//     ownerId: "1",
+//     ownerName: "David Smith",
+//     ownerMobile: "+15555555559",
+//     ownerImage: "https://example.com/david-smith.png",
+//     ownerAddress: "1213 Cedar Street, Anytown, CA 91234",
+//     weight: 150,
+//     status: 5,
+//     dateAdded: "2023-08-08T12:00:00.000Z",
+//   },
+// ];
 
 export const userProducts: UserProduct[] = [
   {
@@ -397,5 +397,49 @@ export const requests: Request[] = [
     status: "read",
     isIncoming: false, // withdrawal
     dateAdded: "2023-08-11T12:00:00.000Z",
+  },
+];
+
+
+export const farmerAssistantChat: Chat[] = [
+  {
+    id: "1",
+    isPrompt: true,
+    body: "What are some tips for reducing food waste in my farm?"
+  },
+  {
+    id: "2",
+    isPrompt: false,
+    body: "Reducing food waste on your farm is crucial. Here are some tips:</br>1. Properly store fruits and vegetables to extend their freshness.</br>2. Plan your planting and harvesting schedule to match demand.</br>3. Donate surplus produce to local food banks.</br>4. Compost organic waste to enrich your soil."
+  },
+  {
+    id: "3",
+    isPrompt: true,
+    body: "How can AI help in farm management to reduce food waste?"
+  },
+  {
+    id: "4",
+    isPrompt: false,
+    body: "AI can play a significant role in farm management:</br>1. Predictive analytics can forecast crop yields, helping you plan better.</br>2. Smart sensors can monitor crop conditions, alerting you to issues in real-time.</br>3. Machine learning can optimize irrigation and resource usage.</br>4. AI can suggest ideal harvesting times and market prices."
+  },
+  {
+    id: "5",
+    isPrompt: true,
+    body: "Tell me about food security. How can I contribute to it?"
+  },
+  {
+    id: "6",
+    isPrompt: false,
+    body: "Food security is about ensuring all people have access to safe, nutritious, and sufficient food. As a farmer, you can contribute:</br>1. Grow diverse crops to ensure a variety of food sources.</br>2. Collaborate with local communities to share knowledge and resources.</br>3. Support sustainable farming practices.</br>4. Donate excess food to those in need."
+  },
+  {
+    id: "7",
+    isPrompt: true,
+    body: "What innovative technologies can help improve food security?"
+  },
+  {
+    id: "8",
+    isPrompt: false,
+    body: "Several innovative technologies can enhance food security:</br>1. Precision agriculture for efficient resource use.</br>2. Mobile apps to connect farmers with markets and information.</br>3. Blockchain for transparent supply chains.</br>4. Aquaponics and vertical farming for year-round crop production."
   },
 ];

@@ -66,3 +66,9 @@ export interface DefaultProduct {
   image: string;
   date_added: string;
 }
+
+export interface Chat {
+  id: string;
+  isPrompt: boolean;
+  body: string
+}

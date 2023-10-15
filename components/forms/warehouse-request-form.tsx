@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Input } from "../ui/input"
-import { userProducts } from "@/data"
+import { useData } from "../providers/content-provider"
 
 
 const formSchema = z.object({
@@ -41,70 +41,32 @@ const NewWarehouseRequestForm = ({ defaultItem }: { defaultItem?: string }) => {
 
     const [isMounted, setIsMounted] = useState(false)
     const router = useRouter();
+    const { defaultProducts, warehouses, userProducts } = useData();
 
 
-    const products = [
-        {
-            value: "1",
-            name: "Apple"
-        },
-        {
-            value: "2",
-            name: "Rice"
-        },
-        {
-            value: "3",
-            name: "Corn"
-        },
-        {
-            value: "4",
-            name: "Wheat"
-        },
-        {
-            value: "5",
-            name: "Soybeans"
-        },
-        {
-            value: "6",
-            name: "Oats"
-        },
-    ]
+    const products = defaultProducts.map(prod => ({
+        value: prod.id,
+        name: prod.name
+    }))
 
 
-    const warehouses = [
-        {
-            value: "1234567890",
-            name: "John Doe's Warehouse"
-        },
-        {
-            value: "9876543210",
-            name: "Jane Doe's Warehouse"
-        },
-        {
-            value: "1111111111",
-            name: "Peter Jones's Warehouse"
-        },
-        {
-            value: "2222222222",
-            name: "Mary Johnson's Warehouse"
-        },
-        {
-            value: "3333333333",
-            name: "David Smith's Warehouse"
-        },
-    ]
+    const defaultWarehouses = warehouses.map(each => ({
+        value: each.id,
+        name: each.name
+    }))
 
     useEffect(() => {
         setIsMounted(true)
     }, [])
 
-    const selectedWarehouse = userProducts.find((item) => item?.id === defaultItem)
+    const selectedWarehouse = userProducts.find((item) => item?.itemId === defaultItem)
+    const activeProduct = defaultProducts.find((item) => item?.id === defaultItem)
 
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            product: selectedWarehouse?.itemId || "",
+            product: activeProduct?.id || "",
             weight: 0,
             warehouse: selectedWarehouse?.warehouseId || ""
         }
@@ -225,7 +187,7 @@ const NewWarehouseRequestForm = ({ defaultItem }: { defaultItem?: string }) => {
                                             </FormControl>
                                             <SelectContent>
                                                 {
-                                                    warehouses.map((prod, i) => {
+                                                    defaultWarehouses.map((prod, i) => {
 
                                                         return (
                                                             <SelectItem

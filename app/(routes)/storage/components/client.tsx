@@ -9,9 +9,10 @@ import { Plus } from "lucide-react"
 import { columns } from "./columns"
 import { DataTable } from "@/components/ui/data-table"
 import { UserProduct } from "@/types"
+import { useData } from "@/components/providers/content-provider"
 
 interface UsersTableClient {
-    data: UserProduct[],
+    data?: UserProduct[]
     title: string
     enableDescription?: boolean
     enableAddButton?: boolean
@@ -20,12 +21,13 @@ interface UsersTableClient {
 const ProductsClient: React.FC<UsersTableClient> = ({ data, title, enableDescription = true, enableAddButton = true }) => {
 
     const router = useRouter();
+    const { userProducts } = useData()
 
     return (
         <div className="flex flex-col gap-y-5">
             <div className="flex items-center justify-between">
                 <Heading
-                    title={`${title} (${data?.length})`}
+                    title={`${title} (${data?.length || userProducts?.length})`}
                     description={enableDescription ? "Manage Products of your storage" : ""}
                 />
                 {
@@ -38,7 +40,7 @@ const ProductsClient: React.FC<UsersTableClient> = ({ data, title, enableDescrip
                 }
             </div>
             <Separator />
-            <DataTable filterRow="name" columns={columns} data={data} />
+            <DataTable filterRow="name" columns={columns} data={data || userProducts} />
         </div>
     )
 }

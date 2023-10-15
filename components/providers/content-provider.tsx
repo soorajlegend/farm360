@@ -1,19 +1,21 @@
 'use client'
 import { GET, fetcher } from "@/actions/fetch-util";
-import { User, WarehouseProduct } from "@/types";
+import { User, UserProduct, WarehouseProduct, DefaultProduct } from "@/types";
 import { useAuth } from "@clerk/nextjs";
 import { createContext, useContext, useEffect, useState } from "react";
-import { DefaultProduct } from '../../types';
 
 
 
 export type DataContextType = {
   isLoading: boolean
   user: User | null;
+  defaultProducts: DefaultProduct[]
+  warehouses: User[];
   setUser: (user: User) => void;
   warehouseProducts: WarehouseProduct[],
-  defaultProducts: DefaultProduct[]
   getWarehouseProducts: () => void;
+  userProducts: UserProduct[],
+  getUserProducts: () => void;
 };
 
 
@@ -21,9 +23,12 @@ const DataContext = createContext<DataContextType>({
   isLoading: false,
   user: null,
   setUser: () => { },
-  warehouseProducts: [],
   defaultProducts: [],
-  getWarehouseProducts: () => {}
+  warehouses: [],
+  warehouseProducts: [],
+  getWarehouseProducts: () => { },
+  userProducts: [],
+  getUserProducts: () => { },
 });
 
 type DataProviderProps = {
@@ -34,7 +39,9 @@ export const DataProvider = ({ children }: DataProviderProps) => {
   const [isLoading, setIsloading] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
   const [warehouseProducts, setWarehouseProducts] = useState<WarehouseProduct[]>([]);
+  const [userProducts, setUserProducts] = useState<UserProduct[]>([]);
   const [defaultProducts, setDefaultProducts] = useState<DefaultProduct[]>([]);
+  const [warehouses, setWarehouses] = useState<User[]>([]);
 
   const { userId } = useAuth();
 
@@ -68,7 +75,17 @@ export const DataProvider = ({ children }: DataProviderProps) => {
       }
     };
 
+    const getWarehouses = async () => {
+      try {
+        const defaultproducts = await fetcher({ type: "2" }, "get-user-info.php");
+        setWarehouses(defaultproducts);
+      } catch (error) {
+        console.error('Error fetching default products data:', error);
+      }
+    };
+
     getDefaultProducts();
+    getWarehouses();
   }, [userId])
 
   const getWarehouseProducts = async () => {
@@ -82,10 +99,26 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     setIsloading(false)
   };
 
+  const getUserProducts = async () => {
+    setIsloading(true)
+    try {
+      const products = await fetcher({ userId: user?.id }, "get-products-u.php");
+      setUserProducts(products);
+    } catch (error) {
+      console.error('Error fetching warehouses products:', error);
+    }
+    setIsloading(false)
+  };
+
+
   useEffect(() => {
 
     if (!user) {
       return;
+    }
+
+    if (user?.utype === "1") {
+      getUserProducts();
     }
 
     if (user?.utype === "2") {
@@ -108,7 +141,17 @@ export const DataProvider = ({ children }: DataProviderProps) => {
   //   }
 
   return (
-    <DataContext.Provider value={{ user, setUser, isLoading, warehouseProducts, defaultProducts, getWarehouseProducts }}>
+    <DataContext.Provider value={{
+      user,
+      setUser,
+      isLoading,
+      warehouseProducts,
+      defaultProducts,
+      warehouses,
+      getWarehouseProducts,
+      userProducts,
+      getUserProducts,
+    }}>
       {children}
     </DataContext.Provider>
   );

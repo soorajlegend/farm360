@@ -31,15 +31,15 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
                     <DropdownMenuLabel>
                         Actions
                     </DropdownMenuLabel>
-                    <DropdownMenuItem className="cursor-pointer" onClick={() => router.push(`/storage/${data.id}/view`)}>
+                    <DropdownMenuItem className="cursor-pointer" onClick={() => router.push(`/storage/${data.itemId}/view`)}>
                         <View className="mr-2 h-4 w-4" />
                         View Details
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer" onClick={() => router.push(`/storage/${data.id}/save`)}>
+                    <DropdownMenuItem className="cursor-pointer" onClick={() => router.push(`/storage/${data.itemId}/save`)}>
                         <Plus className="mr-2 h-4 w-4" />
                         Save
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer" onClick={() => router.push(`/storage/${data.id}/withdraw`)}>
+                    <DropdownMenuItem className="cursor-pointer" onClick={() => router.push(`/storage/${data.itemId}/withdraw`)}>
                         <ExternalLink className="mr-2 h-4 w-4" />
                         Withdraw
                     </DropdownMenuItem>

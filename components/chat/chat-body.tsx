@@ -1,12 +1,25 @@
+"use client"
 import { farmerAssistantChat } from '@/data'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import ChatMessage from './chat-message'
 
-const ChatBody = () => {
+const ChatBody = ({ isOpen }: { isOpen: boolean }) => {
 
+    const bottomRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (!bottomRef.current) {
+            return;
+        }
+
+        bottomRef.current?.scrollIntoView({
+            behavior: "smooth",
+        })
+
+    }, [isOpen])
 
     return (
-        <div className='flex flex-col flex-1 w-full h-full overflow-y-auto'>
+        <div className='flex flex-col flex-1 w-full h-full overflow-y-auto hide-scrollbar'>
             {
                 farmerAssistantChat.map((chat) => (
                     <ChatMessage
@@ -15,6 +28,7 @@ const ChatBody = () => {
                     />
                 ))
             }
+            <div ref={bottomRef} />
         </div>
     )
 }

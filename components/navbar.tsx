@@ -7,6 +7,7 @@ import { UserButton } from '@clerk/nextjs';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { MenuIcon } from 'lucide-react';
+import Chat from './chat/chat';
 
 const Logo = () => {
     return (
@@ -27,6 +28,7 @@ const Navbar = () => {
 
     const { user } = useData();
     const [isOpen, setIsOpen] = useState(false);
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
     useEffect(() => {
         if (!user) {
@@ -104,6 +106,7 @@ const Navbar = () => {
                 <Logo />
                 <MenuIcon
                     size={30}
+                    className='block md:hidden'
                     onClick={() => setIsOpen(!isOpen)}
                 />
             </div>
@@ -142,7 +145,13 @@ const Navbar = () => {
                     </div>
                 </div>
             </div>
-            <div className="w-14 h-14 fixed flex items-center justify-center bottom-5 right-5 md:bottom-10 md:right-10 bg-white shadow-xl rounded-xl animate-pulse">
+            <div
+                className={cn(
+                    "w-14 h-14 fixed flex z-40 items-center justify-center bottom-5 right-5 md:bottom-10 md:right-10 bg-white shadow-xl rounded-xl animate-pulse cursor-pointer",
+                    isChatOpen && "animate-none"
+                )}
+                onClick={() => setIsChatOpen(!isChatOpen)}
+            >
                 <Image
                     src="/x.png"
                     width={10}
@@ -151,6 +160,10 @@ const Navbar = () => {
                     alt='x assistant logo'
                 />
             </div>
+            <Chat 
+            isOpen={isChatOpen} 
+            onClose={setIsChatOpen}
+            />
         </>
     )
 }

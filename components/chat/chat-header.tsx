@@ -8,7 +8,7 @@ interface ChatHeaderProps {
 
 const ChatHeader = ({ onClose }: ChatHeaderProps) => {
     return (
-        <div className='flex items-center w-full gap-3 bg-slate-100 py-2 px-4'>
+        <div className='flex items-center w-full gap-3 bg-slate-50 py-2 px-4'>
             <div className="flex gap-3 items-center">
                 <Avatar>
                     <AvatarImage src='/x.png' />
